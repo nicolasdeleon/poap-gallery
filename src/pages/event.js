@@ -369,16 +369,16 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
 
   const collectionlLinks = [
     {
-      id: 'PRYSM',
-      getUrl: PrysmScanLink,
-      icon: Prysm,
-      tooltipText: 'View Collection in Prysm.xyz'
-    },
-    {
       id: 'POAP_EXPLORE',
       getUrl: PoapExploreLink,
       icon: Poap,
       tooltipText: 'View Collection in Explore.poap.xyz'
+    },
+    {
+      id: 'PRYSM',
+      getUrl: PrysmScanLink,
+      icon: Prysm,
+      tooltipText: 'View Collection in Prysm.xyz'
     },
     {
       id: 'RAINBOW',
