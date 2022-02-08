@@ -279,7 +279,7 @@ function ExternalIconCell({url, icon, tooltipText = null, content}) {
       >
         <span>
           <img src={icon}
-               style={{'margin': '0 5px', 'vertical-align': 'middle', width: '20px', height: '20px'}}
+               style={{'margin': '0 5px', 'verticalAlign': 'middle', width: '20px', height: '20px'}}
                alt={'Open external link'} />
         </span>
         <ReactTooltip id='mainTooltip' effect='solid'/>
