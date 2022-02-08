@@ -19,7 +19,12 @@ import { Foliage } from '../components/foliage';
 import {dateCell, shrinkAddress, utcDateFormatted, utcDateFull} from '../utilities/utilities';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 import Prysm from '../assets/images/prysm.svg';
-import {POAP_APP_URL, PRYSM_APP_URL} from "../store/api";
+import Poap from '../assets/images/POAP.svg';
+import Rainbow from '../assets/images/rainbow.png';
+import Mazury from '../assets/images/mazury.png';
+import CyberConnect from '../assets/images/cyberConnect.svg';
+import {POAP_APP_URL, PRYSM_APP_URL, POAP_EXPLORE_APP_URL, RAINBOW_APP_URL,
+  MAZURY_APP_URL, CYBERCONNECT_APP_URL} from "../store/api";
 import {Spinner} from "../components/spinner";
 
 const GRAPH_LIMIT = 1000;
@@ -249,7 +254,7 @@ export function Event() {
   )
 }
 
-function ExternalIconCell({url, tooltipText = null, content}) {
+function ExternalIconCell({url, icon, tooltipText = null, content}) {
   const [isHovering, setIsHovering] = useState(false)
   const [isHoveringLink, setIsHoveringLink] = useState(false)
 
@@ -273,7 +278,7 @@ function ExternalIconCell({url, tooltipText = null, content}) {
          style={{position: 'relative', width: 27}}
       >
         <span>
-          <img src={Prysm}
+          <img src={icon}
                style={{'margin': '0 5px', 'vertical-align': 'middle', width: '20px', height: '20px'}}
                alt={'Open external link'} />
         </span>
@@ -342,9 +347,58 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
     return (`${PRYSM_APP_URL}/profile/${token.owner.id}/achievements`);
   };
 
+  const PoapExploreLink = (token) => {
+    return (`${POAP_EXPLORE_APP_URL}/${token.owner.id}`);
+  };
+
+  const RainbowLink = (token) => {
+    return (`${RAINBOW_APP_URL}/${token.owner.id}`);
+  };
+
+  const MazuryLink = (token) => {
+    return (`${MAZURY_APP_URL}/people/${token.owner.id}`);
+  };
+
+  const CyberconnectLink = (token) => {
+    return (`${CYBERCONNECT_APP_URL}/address/${token.owner.id}`);
+  };
+
   const PoapScanLink = (token) => {
     return (`${POAP_APP_URL}/scan/${token.owner.id}`);
   };
+
+  const collectionlLinks = [
+    {
+      id: 'PRYSM',
+      getUrl: PrysmScanLink,
+      icon: Prysm,
+      tooltipText: 'View Collection in Prysm.xyz'
+    },
+    {
+      id: 'POAP_EXPLORE',
+      getUrl: PoapExploreLink,
+      icon: Poap,
+      tooltipText: 'View Collection in Explore.poap.xyz'
+    },
+    {
+      id: 'RAINBOW',
+      getUrl: RainbowLink,
+      icon: Rainbow,
+      tooltipText: 'View Collection in Rainbow.me'
+    },
+    {
+      id: 'MAZURY',
+      getUrl: MazuryLink,
+      icon: Mazury,
+      tooltipText: 'View Collection in Mazury.xyz'
+    },
+    {
+      id: 'CYBERCONNECT',
+      getUrl: CyberconnectLink,
+      icon: CyberConnect,
+      tooltipText: 'View Collection in Cyberconnect.me'
+    },
+  ]
 
   const MobileRow = ({token, address}) => (
       <div className={`mobile-row open`}>
@@ -398,7 +452,7 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
     for (let i = 0; i < tokens.length; i++) {
       _data.push({
         col1:  (<ExternalLinkCell url={`${POAP_APP_URL}/token/${tokens[i].id}`} content={`#${tokens[i].id}`}/>) ,
-        col2: (<div><ExternalLinkCell url={PoapScanLink(tokens[i])} tooltipText='View Collection in POAP.scan' content={tokens[i].owner.id}/><ExternalIconCell url={PrysmScanLink(tokens[i])} tooltipText='View Collection in Prysm.xyz' content={tokens[i].owner.id}/></div>),
+        col2: (<div><ExternalLinkCell url={PoapScanLink(tokens[i])} tooltipText='View Collection in POAP.scan' content={tokens[i].owner.id}/>{collectionlLinks.map(link => <ExternalIconCell url={link.getUrl(tokens[i])} key={link.id} icon={link.icon} tooltipText={link.tooltipText}/>)}</div>),
         col3: tokens[i].created * 1000,
         col4: tokens[i].transferCount,
         col5: tokens[i].owner.tokensOwned,
@@ -421,7 +475,7 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
         let validName = ensNames[i]
         if (validName) {
           if (data[i]) {
-            _data[i].col2 = (<div><a href={PoapScanLink(tokens[i])} target="_blank"  rel="noopener noreferrer" data-tip='View Collection in POAP.scan'> <ReactTooltip effect='solid' /> {validName}</a><ExternalIconCell url={PrysmScanLink(tokens[i])} tooltipText='View Collection in Prysm.xyz' content={tokens[i].owner.id}/></div>)
+            _data[i].col2 = (<div><a href={PoapScanLink(tokens[i])} target="_blank"  rel="noopener noreferrer" data-tip='View Collection in POAP.scan'> <ReactTooltip effect='solid' /> {validName}</a>{collectionlLinks.map(link => <ExternalIconCell url={link.getUrl(tokens[i])} key={link.id} icon={link.icon} tooltipText={link.tooltipText}/>)}</div>)
             _mobileData[i].col1 = <MobileRow token={tokens[i]} address={validName} />
           }
         }
