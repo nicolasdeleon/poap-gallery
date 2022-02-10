@@ -18,13 +18,14 @@ import { EventCard } from '../components/eventCard';
 import { Foliage } from '../components/foliage';
 import {dateCell, shrinkAddress, utcDateFormatted, utcDateFull} from '../utilities/utilities';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
-import Prysm from '../assets/images/prysm.svg';
-import Poap from '../assets/images/POAP.svg';
-import Rainbow from '../assets/images/rainbow.png';
-import Mazury from '../assets/images/mazury.png';
 import CyberConnect from '../assets/images/cyberConnect.svg';
-import {POAP_APP_URL, PRYSM_APP_URL, POAP_EXPLORE_APP_URL, RAINBOW_APP_URL,
-  MAZURY_APP_URL, CYBERCONNECT_APP_URL} from "../store/api";
+import Mazury from '../assets/images/mazury.png';
+import Poap from '../assets/images/POAP.svg';
+import Prysm from '../assets/images/prysm.svg';
+import Rainbow from '../assets/images/rainbow.png';
+import Tally from '../assets/images/tally.png';
+import {CYBERCONNECT_APP_URL, MAZURY_APP_URL, POAP_APP_URL, POAP_EXPLORE_APP_URL,
+   PRYSM_APP_URL, RAINBOW_APP_URL, WITHTALLY_APP_URL} from "../store/api";
 import {Spinner} from "../components/spinner";
 
 const GRAPH_LIMIT = 1000;
@@ -359,6 +360,10 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
     return (`${MAZURY_APP_URL}/people/${token.owner.id}`);
   };
 
+  const WithTallyLink = (token) => {
+    return (`${WITHTALLY_APP_URL}/voter/${token.owner.id}`)
+  }
+
   const CyberconnectLink = (token) => {
     return (`${CYBERCONNECT_APP_URL}/address/${token.owner.id}`);
   };
@@ -391,6 +396,12 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
       getUrl: MazuryLink,
       icon: Mazury,
       tooltipText: 'View Collection in Mazury.xyz'
+    },
+    {
+      id: 'WITHTALLY',
+      getUrl: WithTallyLink,
+      icon: Tally,
+      tooltipText: 'View Collection in withtally.com'
     },
     {
       id: 'CYBERCONNECT',
