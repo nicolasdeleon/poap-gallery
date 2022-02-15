@@ -401,7 +401,7 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
       id: 'WITHTALLY',
       getUrl: WithTallyLink,
       icon: Tally,
-      tooltipText: 'View Collection in withtally.com'
+      tooltipText: 'View Collection in Tally'
     },
     {
       id: 'CYBERCONNECT',
