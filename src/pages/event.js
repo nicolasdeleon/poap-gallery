@@ -18,15 +18,9 @@ import { EventCard } from '../components/eventCard';
 import { Foliage } from '../components/foliage';
 import {dateCell, shrinkAddress, utcDateFormatted, utcDateFull} from '../utilities/utilities';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
-import CyberConnect from '../assets/images/cyberConnect.svg';
-import Mazury from '../assets/images/mazury.png';
-import Poap from '../assets/images/POAP.svg';
-import Prysm from '../assets/images/prysm.svg';
-import Rainbow from '../assets/images/rainbow.png';
-import Tally from '../assets/images/tally.png';
-import {CYBERCONNECT_APP_URL, MAZURY_APP_URL, POAP_APP_URL, POAP_EXPLORE_APP_URL,
-   PRYSM_APP_URL, RAINBOW_APP_URL, WITHTALLY_APP_URL} from "../store/api";
 import {Spinner} from "../components/spinner";
+import { collectionlLinks } from '../utilities/utilities';
+import {POAP_APP_URL} from "../store/api";
 
 const GRAPH_LIMIT = 1000;
 const CSV_STATUS = {
@@ -344,72 +338,9 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
   const [data, setData] = useState([]);
   const [mobileData, setMobileData] = useState([]);
 
-  const PrysmScanLink = (token) => {
-    return (`${PRYSM_APP_URL}/profile/${token.owner.id}/achievements`);
-  };
-
-  const PoapExploreLink = (token) => {
-    return (`${POAP_EXPLORE_APP_URL}/${token.owner.id}`);
-  };
-
-  const RainbowLink = (token) => {
-    return (`${RAINBOW_APP_URL}/${token.owner.id}`);
-  };
-
-  const MazuryLink = (token) => {
-    return (`${MAZURY_APP_URL}/people/${token.owner.id}`);
-  };
-
-  const WithTallyLink = (token) => {
-    return (`${WITHTALLY_APP_URL}/voter/${token.owner.id}`)
-  }
-
-  const CyberconnectLink = (token) => {
-    return (`${CYBERCONNECT_APP_URL}/address/${token.owner.id}`);
-  };
-
   const PoapScanLink = (token) => {
     return (`${POAP_APP_URL}/scan/${token.owner.id}`);
   };
-
-  const collectionlLinks = [
-    {
-      id: 'POAP_EXPLORE',
-      getUrl: PoapExploreLink,
-      icon: Poap,
-      tooltipText: 'View Collection in Explore.poap.xyz'
-    },
-    {
-      id: 'PRYSM',
-      getUrl: PrysmScanLink,
-      icon: Prysm,
-      tooltipText: 'View Collection in Prysm.xyz'
-    },
-    {
-      id: 'RAINBOW',
-      getUrl: RainbowLink,
-      icon: Rainbow,
-      tooltipText: 'View Collection in Rainbow.me'
-    },
-    {
-      id: 'MAZURY',
-      getUrl: MazuryLink,
-      icon: Mazury,
-      tooltipText: 'View Collection in Mazury.xyz'
-    },
-    {
-      id: 'WITHTALLY',
-      getUrl: WithTallyLink,
-      icon: Tally,
-      tooltipText: 'View Collection in Tally'
-    },
-    {
-      id: 'CYBERCONNECT',
-      getUrl: CyberconnectLink,
-      icon: CyberConnect,
-      tooltipText: 'View Collection in Cyberconnect.me'
-    },
-  ]
 
   const MobileRow = ({token, address}) => (
       <div className={`mobile-row open`}>
