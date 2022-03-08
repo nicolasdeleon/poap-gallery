@@ -250,17 +250,10 @@ export function Event() {
 }
 
 const ExternalIconCell = ({url, icon, token, tooltipText = null}) => {
-  const [isHovering, setIsHovering] = useState(false)
-  const [isHoveringLink, setIsHoveringLink] = useState(false)
-
   return (
       <a href={url} target="_blank" rel="noopener noreferrer"
          data-tip={tooltipText}
          data-for={`tooltip-icon-${token}`}
-         onMouseEnter={() => {setIsHovering(true)}}
-         onMouseLeave={() => {
-           if (!isHoveringLink) setIsHovering(false)
-         }}
          style={{position: 'relative', width: 27}}
       >
         <span>
@@ -272,18 +265,12 @@ const ExternalIconCell = ({url, icon, token, tooltipText = null}) => {
 }
 
 const ExternalLinkCell = ({url, token, tooltipText = null, content}) => {
-  const [isHovering, setIsHovering] = useState(false)
-  const [isHoveringLink, setIsHoveringLink] = useState(false)
   const width = useWindowWidth()
 
   return (
     <a href={url} target="_blank" rel="noopener noreferrer"
        data-tip={tooltipText}
        data-for={`tooltip-link-${token}`}
-       onMouseEnter={() => {setIsHovering(true)}}
-       onMouseLeave={() => {
-         if (!isHoveringLink) setIsHovering(false)
-       }}
        style={{position: 'relative', width: 27}}
     >
       <span>{shrinkAddress(content, width > 768 ? 20 : 10)}</span>
