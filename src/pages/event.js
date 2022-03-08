@@ -249,35 +249,37 @@ export function Event() {
   )
 }
 
-const ExternalIconCell = ({url, icon, token, tooltipText = null}) => {
+const ExternalIconCell = ({url, icon, tooltipText = null}) => {
   return (
-      <a href={url} target="_blank" rel="noopener noreferrer"
-         data-tip={tooltipText}
-         data-for={`tooltip-icon-${token}`}
-         style={{position: 'relative', width: 27}}
-      >
-        <span>
-          {icon}
-        </span>
-        <ReactTooltip id={`tooltip-icon-${token}`} effect='solid'/>
-      </a>
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={tooltipText}
+      data-cooltipz-dir="top"
+      style={{ position: "relative", width: 27 }}
+    >
+      <span>{icon}</span>
+    </a>
   );
 }
 
-const ExternalLinkCell = ({url, token, tooltipText = null, content}) => {
-  const width = useWindowWidth()
+const ExternalLinkCell = ({ url, tooltipText = null, content }) => {
+  const width = useWindowWidth();
 
   return (
-    <a href={url} target="_blank" rel="noopener noreferrer"
-       data-tip={tooltipText}
-       data-for={`tooltip-link-${token}`}
-       style={{position: 'relative', width: 27}}
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={tooltipText}
+      data-cooltipz-dir="top"
+      style={{ position: "relative", width: 27 }}
     >
       <span>{shrinkAddress(content, width > 768 ? 20 : 10)}</span>
-      <ReactTooltip id={`tooltip-link-${token}`} effect='solid' />
-   </a>
- );
-}
+    </a>
+  );
+};
 
 function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
   const [data, setData] = useState([]);
@@ -338,8 +340,8 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
     let _data = [], _mobileData = []
     for (let i = 0; i < tokens.length; i++) {
       _data.push({
-        col1:  (<ExternalLinkCell url={`${POAP_APP_URL}/token/${tokens[i].id}`} token={tokens[i].id + tokens[i].owner.id} content={`#${tokens[i].id}`}/>) ,
-        col2: (<div><ExternalLinkCell url={PoapScanLink(tokens[i])} token={tokens[i].id + tokens[i].owner.id} tooltipText='View Collection in POAP.scan' content={tokens[i].owner.id}/>{collectionlLinks.map(link => <ExternalIconCell url={link.getUrl(tokens[i])} token={tokens[i].id + tokens[i].owner.id + link.id} key={link.id} icon={link.icon} tooltipText={link.tooltipText}/>)}</div>),
+        col1:  (<ExternalLinkCell url={`${POAP_APP_URL}/token/${tokens[i].id}`} content={`#${tokens[i].id}`}/>) ,
+        col2: (<div><ExternalLinkCell url={PoapScanLink(tokens[i])} tooltipText='View Collection in POAP.scan' content={tokens[i].owner.id}/>{collectionlLinks.map(link => <ExternalIconCell url={link.getUrl(tokens[i])} key={link.id} icon={link.icon} tooltipText={link.tooltipText}/>)}</div>),
         col3: tokens[i].created * 1000,
         col4: tokens[i].transferCount,
         col5: tokens[i].owner.tokensOwned,
@@ -362,7 +364,7 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
         let validName = ensNames[i]
         if (validName) {
           if (data[i]) {
-            _data[i].col2 = (<div><a href={PoapScanLink(tokens[i])} target="_blank"  rel="noopener noreferrer" data-tip='View Collection in POAP.scan'> <ReactTooltip effect='solid' /> {validName}</a>{collectionlLinks.map(link => <ExternalIconCell url={link.getUrl(tokens[i])} token={tokens[i].id + tokens[i].owner.id + link.id} key={link.id} icon={link.icon} tooltipText={link.tooltipText}/>)}</div>)
+            _data[i].col2 = (<div><a href={PoapScanLink(tokens[i])} target="_blank"  rel="noopener noreferrer" data-tip='View Collection in POAP.scan'> <ReactTooltip effect='solid' /> {validName}</a>{collectionlLinks.map(link => <ExternalIconCell url={link.getUrl(tokens[i])} key={link.id} icon={link.icon} tooltipText={link.tooltipText}/>)}</div>)
             _mobileData[i].col1 = <MobileRow token={tokens[i]} address={validName} />
           }
         }
