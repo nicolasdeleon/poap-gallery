@@ -193,7 +193,7 @@
 [aria-label][class*='cooltipz'][data-cooltipz-visible]::after,
 [aria-label][class*='cooltipz'].cooltipz--visible::before,
 [aria-label][class*='cooltipz'].cooltipz--visible::after {
-  opacity: 100%;
+  opacity: 1;
   transition-delay: var(--cooltipz-delay-show, 0s);
 }
 [aria-label][data-cooltipz-dir][data-cooltipz-dir='top']::after,
