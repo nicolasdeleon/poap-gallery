@@ -249,87 +249,45 @@ export function Event() {
   )
 }
 
-function ExternalIconCell({url, icon, tooltipText = null, content}) {
+const ExternalIconCell = ({url, icon, token, tooltipText = null}) => {
   const [isHovering, setIsHovering] = useState(false)
   const [isHoveringLink, setIsHoveringLink] = useState(false)
 
-  let hoverDeactivateTimeout = null;
-  let hoverLinkDeactivateTimeout = null;
-  useEffect(()=>{
-    return () => {
-      // Clear timeouts on unmount
-      clearTimeout(hoverDeactivateTimeout)
-      clearTimeout(hoverLinkDeactivateTimeout)
-    }
-  })
   return (
       <a href={url} target="_blank" rel="noopener noreferrer"
          data-tip={tooltipText}
-         data-for='mainTooltip'
+         data-for={`tooltip-icon-${token}`}
          onMouseEnter={() => {setIsHovering(true)}}
-         onMouseLeave={() => {hoverDeactivateTimeout = setTimeout(() => {
+         onMouseLeave={() => {
            if (!isHoveringLink) setIsHovering(false)
-         }, 500)}}
+         }}
          style={{position: 'relative', width: 27}}
       >
         <span>
-          <img src={icon}
-               style={{'margin': '0 5px', 'verticalAlign': 'middle', width: '20px', height: '20px'}}
-               alt={'Open external link'} />
+          {icon}
         </span>
-        <ReactTooltip id='mainTooltip' effect='solid'/>
-        {
-          isHovering &&
-          <><div className='external-link'
-                 data-tip='Open external link'
-                 data-for='linkTooltip'
-                 onMouseEnter={() => {clearTimeout(hoverDeactivateTimeout); clearTimeout(hoverLinkDeactivateTimeout); setIsHoveringLink(true)}}
-                 onMouseLeave={() => {hoverLinkDeactivateTimeout = setTimeout(() => {
-                   setIsHoveringLink(false)
-                   setIsHovering(false)
-                 }, 500)}}
-          >
-          </div><ReactTooltip id='linkTooltip' effect='solid' place='bottom'/></> }
+        <ReactTooltip id={`tooltip-icon-${token}`} effect='solid'/>
       </a>
   );
 }
 
-function ExternalLinkCell({url, tooltipText = null, content}) {
+const ExternalLinkCell = ({url, token, tooltipText = null, content}) => {
   const [isHovering, setIsHovering] = useState(false)
   const [isHoveringLink, setIsHoveringLink] = useState(false)
   const width = useWindowWidth()
-  let hoverDeactivateTimeout = null;
-  let hoverLinkDeactivateTimeout = null;
-  useEffect(()=>{
-    return () => {
-      // Clear timeouts on unmount
-      clearTimeout(hoverDeactivateTimeout)
-      clearTimeout(hoverLinkDeactivateTimeout)
-    }
-  })
+
   return (
     <a href={url} target="_blank" rel="noopener noreferrer"
        data-tip={tooltipText}
-       data-for='mainTooltip'
+       data-for={`tooltip-link-${token}`}
        onMouseEnter={() => {setIsHovering(true)}}
-       onMouseLeave={() => {hoverDeactivateTimeout = setTimeout(() => {
+       onMouseLeave={() => {
          if (!isHoveringLink) setIsHovering(false)
-       }, 500)}}
+       }}
        style={{position: 'relative', width: 27}}
     >
-      <span>{shrinkAddress(content, width > 768 ? 20 : 10)}</span><ReactTooltip id='mainTooltip' effect='solid'/>
-       {
-         isHovering &&
-         <><div className='external-link'
-              data-tip='Open external link'
-              data-for='linkTooltip'
-              onMouseEnter={() => {clearTimeout(hoverDeactivateTimeout); clearTimeout(hoverLinkDeactivateTimeout); setIsHoveringLink(true)}}
-              onMouseLeave={() => {hoverLinkDeactivateTimeout = setTimeout(() => {
-                setIsHoveringLink(false)
-                setIsHovering(false)
-              }, 500)}}
-         >
-         </div><ReactTooltip id='linkTooltip' effect='solid' place='bottom'/></> }
+      <span>{shrinkAddress(content, width > 768 ? 20 : 10)}</span>
+      <ReactTooltip id={`tooltip-link-${token}`} effect='solid' />
    </a>
  );
 }
@@ -393,8 +351,8 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
     let _data = [], _mobileData = []
     for (let i = 0; i < tokens.length; i++) {
       _data.push({
-        col1:  (<ExternalLinkCell url={`${POAP_APP_URL}/token/${tokens[i].id}`} content={`#${tokens[i].id}`}/>) ,
-        col2: (<div><ExternalLinkCell url={PoapScanLink(tokens[i])} tooltipText='View Collection in POAP.scan' content={tokens[i].owner.id}/>{collectionlLinks.map(link => <ExternalIconCell url={link.getUrl(tokens[i])} key={link.id} icon={link.icon} tooltipText={link.tooltipText}/>)}</div>),
+        col1:  (<ExternalLinkCell url={`${POAP_APP_URL}/token/${tokens[i].id}`} token={tokens[i].id + tokens[i].owner.id} content={`#${tokens[i].id}`}/>) ,
+        col2: (<div><ExternalLinkCell url={PoapScanLink(tokens[i])} token={tokens[i].id + tokens[i].owner.id} tooltipText='View Collection in POAP.scan' content={tokens[i].owner.id}/>{collectionlLinks.map(link => <ExternalIconCell url={link.getUrl(tokens[i])} token={tokens[i].id + tokens[i].owner.id + link.id} key={link.id} icon={link.icon} tooltipText={link.tooltipText}/>)}</div>),
         col3: tokens[i].created * 1000,
         col4: tokens[i].transferCount,
         col5: tokens[i].owner.tokensOwned,
@@ -417,7 +375,7 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
         let validName = ensNames[i]
         if (validName) {
           if (data[i]) {
-            _data[i].col2 = (<div><a href={PoapScanLink(tokens[i])} target="_blank"  rel="noopener noreferrer" data-tip='View Collection in POAP.scan'> <ReactTooltip effect='solid' /> {validName}</a>{collectionlLinks.map(link => <ExternalIconCell url={link.getUrl(tokens[i])} key={link.id} icon={link.icon} tooltipText={link.tooltipText}/>)}</div>)
+            _data[i].col2 = (<div><a href={PoapScanLink(tokens[i])} target="_blank"  rel="noopener noreferrer" data-tip='View Collection in POAP.scan'> <ReactTooltip effect='solid' /> {validName}</a>{collectionlLinks.map(link => <ExternalIconCell url={link.getUrl(tokens[i])} token={tokens[i].id + tokens[i].owner.id + link.id} key={link.id} icon={link.icon} tooltipText={link.tooltipText}/>)}</div>)
             _mobileData[i].col1 = <MobileRow token={tokens[i]} address={validName} />
           }
         }
